@@ -9,9 +9,11 @@ const operations = pipe(
   partialize(debounceTime, 500)
 );
 
+const emitTotals = partialize(EventEmitter.emit, 'itens-totalizados');
+
 const action = operations(() =>
   retry(3, 3000, () => timeoutPromise(200, service.sumItems('2143')))
-    .then(total => EventEmitter.emit('itens-totalizados', total))
+    .then(emitTotals)
     .catch(console.log)
 );
 
